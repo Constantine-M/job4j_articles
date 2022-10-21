@@ -1,5 +1,9 @@
 package ru.job4j.articles.model;
 
+/**
+ * Данный класс описывает
+ * модель "статья".
+ */
 public class Article {
 
     private int id;

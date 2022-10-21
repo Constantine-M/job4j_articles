@@ -10,6 +10,10 @@ import ru.job4j.articles.store.Store;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Данный класс описывает реализацию
+ * сервиса по генерации статей.
+ */
 public class SimpleArticleService implements ArticleService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleArticleService.class.getSimpleName());
@@ -20,6 +24,22 @@ public class SimpleArticleService implements ArticleService {
         this.articleGenerator = articleGenerator;
     }
 
+    /**
+     * Данный метод описывает
+     * сервис генерации статей, а именно
+     * генерирует статьи и записывает в БД.
+     *
+     * Процесс такой -  N тыс генерится,
+     * N тыс записываются в БД,
+     * потом список ранее сгенерированных
+     * статей очищается. При этом общий
+     * процесс генерации статей не прекращается.
+     *
+     * @param wordStore хранилище слов.
+     * @param count кол-во статей, которые
+     *              нужно сгенерировать.
+     * @param articleStore хранилище статей.
+     */
     @Override
     public void generate(Store<Word> wordStore, int count, Store<Article> articleStore) {
         LOGGER.info("Геренация статей в количестве {}", count);

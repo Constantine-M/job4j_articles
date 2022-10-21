@@ -10,6 +10,16 @@ import ru.job4j.articles.store.WordStore;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Данный класс описывает непосредственно
+ * приложение.
+ *
+ * Приложение генерирует статьи из слов
+ * в случайном порядке. Слова предварительно
+ * записываются в базу данных из скрипта sql.
+ * База данных хранится в виде файла,
+ * драйвер БД - HSQLDB.
+ */
 public class Application {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class.getSimpleName());

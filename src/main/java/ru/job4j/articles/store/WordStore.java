@@ -14,6 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Данный класс описывает
+ * хранилище слов.
+ *
+ * Слова будут храниться в БД HSQL,
+ * в отдельной таблице.
+ */
 public class WordStore implements Store<Word>, AutoCloseable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WordStore.class.getSimpleName());

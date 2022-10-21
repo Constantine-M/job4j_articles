@@ -14,6 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Данный класс описывает
+ * хранилище статей.
+ *
+ * Статьи будут храниться в БД HSQL,
+ * в отдельной таблице.
+ */
 public class ArticleStore implements Store<Article>, AutoCloseable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleStore.class.getSimpleName());

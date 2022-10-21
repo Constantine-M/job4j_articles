@@ -8,6 +8,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Данный класс описывает одну
+ * из реализаций генератора.
+ */
 public class RandomArticleGenerator implements ArticleGenerator {
     @Override
     public Article generate(List<Word> words) {
