@@ -6,10 +6,7 @@ import ru.job4j.articles.model.Word;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -33,6 +30,7 @@ public class WordStore implements Store<Word>, AutoCloseable {
         this.properties = properties;
         initConnection();
         initScheme();
+        clear();
         initWords();
     }
 
@@ -117,4 +115,19 @@ public class WordStore implements Store<Word>, AutoCloseable {
         }
     }
 
+    @Override
+    public void clear() {
+        String select = "select count(*) from public.dictionary;";
+        String truncate = "truncate table public.dictionary RESTART IDENTITY;";
+        try (Statement statement = connection.createStatement()) {
+            var rows = statement.execute(select);
+            if (rows) {
+                LOGGER.info("Производим очистку словаря");
+                statement.execute(truncate);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            throw new IllegalStateException();
+        }
+    }
 }

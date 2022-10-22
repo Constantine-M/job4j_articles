@@ -33,6 +33,7 @@ public class ArticleStore implements Store<Article>, AutoCloseable {
         this.properties = properties;
         initConnection();
         initScheme();
+        clear();
     }
 
     private void initConnection() {
@@ -71,6 +72,7 @@ public class ArticleStore implements Store<Article>, AutoCloseable {
             while (key.next()) {
                 model.setId(key.getInt(1));
             }
+            LOGGER.info("Сохранение статьи # {}", model.getId());
         } catch (Exception e) {
             LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
             throw new IllegalStateException();
@@ -102,6 +104,32 @@ public class ArticleStore implements Store<Article>, AutoCloseable {
     public void close() throws Exception {
         if (connection != null) {
             connection.close();
+        }
+    }
+
+    /**
+     * Данный метод очищает данные
+     * в таблице, если там есть
+     * хотя бы одна строка.
+     *
+     * Выбрал метод truncate.
+     * Он быстрее, чем delete.
+     * В данном конкретном случае
+     * нам этого достаточно.
+     */
+    @Override
+    public void clear() {
+        String select = "select count(*) from public.articles;";
+        String truncate = "truncate table public.articles RESTART IDENTITY;";
+        try (Statement statement = connection.createStatement()) {
+            var rows = statement.execute(select);
+            if (rows) {
+                LOGGER.info("Производим очистку статей");
+                statement.execute(truncate);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
+            throw new IllegalStateException();
         }
     }
 }
