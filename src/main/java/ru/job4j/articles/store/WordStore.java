@@ -120,10 +120,13 @@ public class WordStore implements Store<Word>, AutoCloseable {
         String select = "select count(*) from public.dictionary;";
         String truncate = "truncate table public.dictionary RESTART IDENTITY;";
         try (Statement statement = connection.createStatement()) {
-            var rows = statement.execute(select);
-            if (rows) {
-                LOGGER.info("Производим очистку словаря");
-                statement.execute(truncate);
+            var resultSet = statement.executeQuery(select);
+            if (resultSet.next()) {
+                var count = resultSet.getInt(1);
+                if (count > 0) {
+                    LOGGER.info("Производим очистку словаря");
+                    statement.execute(truncate);
+                }
             }
         } catch (Exception e) {
             LOGGER.error("Не удалось выполнить операцию: { }", e.getCause());
